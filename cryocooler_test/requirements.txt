@@ -1,0 +1,6 @@
+pytest
+matplotlib
+plotly
+pandas
+numpy
+reportlab
