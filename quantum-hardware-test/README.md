@@ -1,78 +1,78 @@
-# Cryocooler Test System
+# Quantum Hardware Test Bench
 
-A comprehensive testing and control system for cryocooling systems, featuring temperature control, data acquisition, and automated reporting.
+A **single-qubit characterization bench** — the standard measurements used to
+characterize and calibrate superconducting / trapped-ion qubits inside a dilution
+refrigerator — together with the **cryostat thermal-control** instrumentation that
+supports them.
 
-## Project Structure
+Each experiment is simulated with realistic readout **shot noise** (binomial
+sampling of N single-shot reads per point) and fit by **least squares**, reporting
+every parameter with a **covariance-based uncertainty** (`perr = sqrt(diag(pcov))`)
+— the same workflow run on real hardware.
 
-```
-project_root/
-│
-├── src/                      # Source code (core implementation)
-│   ├── cryocooler/           # Cryocooler testing logic and components
-│   ├── daq/                  # Data acquisition (DAQ) system components
-│   ├── power_supply/         # Power supply testing modules
-│   ├── system_integration/   # System integration and feedback control
-│   └── utils/                # Utility functions
-│
-├── tests/                    # All test files
-│   ├── unit/                 # Unit tests
-│   ├── integration/          # Integration tests
-│   ├── system/               # System tests
-│   └── fixtures/             # Test fixtures
-│
-├── data/                     # Test data
-│   ├── raw/                  # Raw test data
-│   ├── processed/            # Processed data
-│   └── manifests/            # Test configuration files
-│
-├── reports/                  # Test result reports
-└── docs/                     # Documentation
-```
+## Characterization experiments
 
-## Installation
+| Experiment | Model fit | Extracts |
+|---|---|---|
+| **T1** energy relaxation | `A·exp(-t/T1) + C` | T1 ± σ |
+| **T2\*** Ramsey | `A·exp(-t/T2)·cos(2π·Δf·t + φ) + C` | T2\*, detuning Δf |
+| **Rabi** calibration | `A/2·(1 − cos(2π·f_R·t)) + C` | Rabi frequency → π-pulse |
+| **Hahn echo** T2 | refocused decay | T2_echo ( > T2\* ) |
+| **Readout** assignment fidelity | IQ-plane Gaussian blobs | F, 2×2 confusion matrix |
+| **Randomized benchmarking** | `A·p^m + B` | error-per-Clifford |
 
-1. Clone the repository:
+An optional **QuTiP Lindblad master-equation engine** lets T1/T2 emerge from
+open-system dynamics (collapse operators `√Γ₁·σ⁻` and `√(Γφ/2)·σz`). It is imported
+lazily — everything else runs on numpy/scipy alone, and the test suite is green
+**without** QuTiP installed.
+
+## Quickstart
+
 ```bash
-git clone <repository-url>
-cd cryocooler_test
+pip install numpy scipy pandas matplotlib reportlab pytest
+
+# Full characterization battery against simulated hardware (known params + noise):
+python -m src.qubit --shots 8192
+#   T1 relaxation : 49.7 +/- 0.6 us   (injected 50.0 us)
+#   Ramsey T2*    : 29.8 +/- 0.5 us   ...
 ```
 
-2. Create and activate a virtual environment:
-```bash
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+```python
+from src.qubit import simulate_t1, fit_t1
+
+delays, p_hat, sigma = simulate_t1(t1_true=50e-6, n_shots=4096, seed=0)
+res = fit_t1(delays, p_hat, sigma)
+print(res.T1, "+/-", res.T1_err)      # covariance-based 1σ error bar
 ```
 
-3. Install the package:
-```bash
-pip install -e .
+## Cryostat thermal control (supporting infrastructure)
+
+Qubits operate at ~4 K. The `cryocooler/` package is the cryostat controller that
+holds that environment: PID temperature regulation against a lumped thermal model,
+simulated sensors with noise/drift, a DAQ layer with fault recovery, and CSV/PDF
+reporting. It is the environment the qubit bench runs in — supporting infrastructure,
+not the headline.
+
+## Package layout
+
+```
+src/
+├── qubit/            # headline: T1 / T2* / Rabi / echo / readout / RB + fits with uncertainty
+│   ├── models.py     #   shared fit models + covariance-based FitResult
+│   ├── relaxation.py # ramsey.py  rabi.py  hahn_echo.py  readout.py
+│   ├── randomized_benchmarking.py
+│   └── lindblad.py   #   optional QuTiP master-equation engine
+├── cryocooler/       # supporting cryostat thermal control (PID + thermal model + sensors)
+├── daq/              # data acquisition + instrument comms
+└── utils/            # reporting
 ```
 
-## Usage
+## Testing
 
-Run the cryocooler test system:
 ```bash
-cryocooler-test --run-test --generate-report
-```
-
-Options:
-- `--run-test`: Run the test cycle
-- `--duration`: Test duration in seconds (default: 3600)
-- `--setpoint`: Temperature setpoint in Kelvin (default: 4.0)
-- `--generate-report`: Generate test report
-
-## Development
-
-1. Install development dependencies:
-```bash
-pip install -e ".[dev]"
-```
-
-2. Run tests:
-```bash
-pytest
+pytest tests/ -q     # every fit validated against injected ground truth
 ```
 
 ## License
 
-MIT License
+MIT

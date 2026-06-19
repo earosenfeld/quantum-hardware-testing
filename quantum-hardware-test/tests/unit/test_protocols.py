@@ -1,5 +1,5 @@
 import pytest
-from src.protocols import ModbusTCP, VISA
+from src.daq.modbus import ModbusTCP, VISA
 
 def test_modbus_tcp_error_and_recovery():
     modbus = ModbusTCP(fail_rate=1.0)

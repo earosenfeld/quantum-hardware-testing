@@ -21,19 +21,17 @@ def test_data_logging_and_csv():
     assert len(df) == 5
 
 def test_sensor_failure_handling():
-    # Create a sensor with deterministic failure
-    sensor = Sensor(0)
-    sensor.failed = True  # Force the failure state
-    sensors = [sensor, Sensor(1)]
-    daq = DAQ(sensors)
-    
-    # First read should fail
-    with pytest.raises(RuntimeError):
-        daq.read_all()
-    
-    # Reset the sensor
-    sensor.reset()
-    
-    # Now it should work
-    data = daq.read_all()
+    """DAQ recovers from a failed sensor: it drops + auto-resets the bad channel
+    and keeps serving healthy readings, with the sensor back online next cycle."""
+    s0 = Sensor(0, fail_rate=0.0)
+    s1 = Sensor(1, fail_rate=0.0)
+    s0.failed = True  # force sensor 0 into a failed state
+    daq = DAQ([s0, s1], packet_loss_rate=0.0)
+
+    # Failed channel is dropped (and auto-reset) this cycle; healthy one served.
+    data = daq.read_all(current_time=0.0)
+    assert len(data) == 1
+
+    # After the DAQ's auto-reset, both sensors read on the next cycle.
+    data = daq.read_all(current_time=0.1)
     assert len(data) == 2

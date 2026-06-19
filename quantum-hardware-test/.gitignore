@@ -24,6 +24,11 @@ wheels/
 venv/
 env/
 ENV/
+.venv/
+
+# OS / editor cruft
+.DS_Store
+debug_output.txt
 
 # IDE
 .idea/
@@ -43,4 +48,4 @@ reports/*
 
 # Test coverage
 .coverage
-htmlcov/ 
+htmlcov/ data/test_report.pdf

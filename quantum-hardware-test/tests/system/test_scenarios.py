@@ -10,6 +10,8 @@ from src.cryocooler.thermal_model import ThermalModel
 import numpy as np
 
 class TestScenario:
+    __test__ = False  # domain helper class, not a pytest test case
+
     def __init__(self, name, description):
         self.name = name
         self.description = description

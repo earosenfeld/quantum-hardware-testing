@@ -76,7 +76,7 @@ def generate_pdf_report(test_results, test_duration, setpoint, output_file):
     story = []
     
     # Title
-    story.append(Paragraph("Quantum Hardware Testing", custom_styles['Title']))
+    story.append(Paragraph("Cryostat Thermal Control Report", custom_styles['Title']))
     story.append(Paragraph(f"Test Report - {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}", custom_styles['Subtitle']))
     story.append(Spacer(1, 20))
     

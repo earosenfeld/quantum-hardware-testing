@@ -1,7 +1,17 @@
-pytest>=7.0.0
-matplotlib>=3.5.0
-plotly>=5.10.0
-pandas>=1.4.0
+# Core: qubit characterization (simulation + fitting + uncertainty) and
+# cryostat thermal-control support. Mirrors [project.dependencies] in
+# pyproject.toml.
 numpy>=1.21.0
+scipy>=1.8.0
+pandas>=1.4.0
+matplotlib>=3.5.0
 reportlab>=3.6.0
 python-dateutil>=2.8.2
+
+# Test runner.
+pytest>=7.0.0
+
+# Optional Lindblad master-equation engine (T1/T2 emerge from open-system
+# dynamics). The closed-form simulators, fits, and full test suite work
+# WITHOUT this. Install with:  pip install qutip
+# qutip>=4.7
