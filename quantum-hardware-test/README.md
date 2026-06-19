@@ -26,6 +26,55 @@ open-system dynamics (collapse operators `√Γ₁·σ⁻` and `√(Γφ/2)·σz
 lazily — everything else runs on numpy/scipy alone, and the test suite is green
 **without** QuTiP installed.
 
+## Characterization gallery
+
+Every figure shows the **noisy single-shot data** (markers, with binomial error
+bars) and the **least-squares fit** (line), annotated with the extracted value and
+its **covariance-based 1σ uncertainty** — exactly what is read off a real run.
+Regenerate with `python scripts/make_figures.py` (fixed seeds → reproducible).
+
+**One-glance characterization battery** — T1, Ramsey T2\*, Rabi, and randomized
+benchmarking on one canvas:
+
+![Single-qubit characterization battery](assets/characterization_summary.png)
+
+| | |
+|---|---|
+| ![T1 relaxation](assets/t1_relaxation.png)<br>**T1 energy relaxation** — excited-state population decays as `A·exp(-t/T1)+C`; the fit recovers **T1 = 49.9 ± 0.5 µs**. | ![Ramsey T2*](assets/ramsey_t2.png)<br>**Ramsey T2\*** — the decaying cosine yields both the dephasing envelope **T2\* = 30.1 µs** and the qubit–drive **detuning Δf = 0.5 MHz** (fringe frequency). |
+| ![Rabi calibration](assets/rabi_calibration.png)<br>**Rabi calibration** — driving on resonance oscillates the population at `f_Rabi`; the first maximum (★) sets the **π-pulse, t_π = 50.0 ns**. | ![Readout fidelity](assets/readout_fidelity.png)<br>**Single-shot readout** — prepared \|0⟩ (blue) and \|1⟩ (red) form two IQ-plane Gaussian blobs; the optimal linear discriminator gives **assignment fidelity F = 0.999** (2×2 confusion matrix at right). |
+
+## System under test
+
+The qubit lives at the cold stage of a dilution refrigerator; the cryostat
+controller holds that ~4 K environment while the characterization battery probes
+the qubit:
+
+```mermaid
+flowchart TB
+    subgraph FRIDGE["❄️ Dilution refrigerator / cryostat"]
+        direction TB
+        PID["Cryocooler controller<br/>PID thermal regulation"] -->|hold ~4 K| STAGE
+        SENSOR["Sensors + DAQ<br/>(noise · drift · fault recovery)"] -->|feedback| PID
+        subgraph STAGE["Cold stage (~4 K)"]
+            QUBIT(["Single qubit"])
+        end
+    end
+
+    QUBIT --> BATT
+
+    subgraph BATT["🔬 Characterization battery"]
+        direction LR
+        T1["T1<br/>relaxation"]
+        T2["T2*<br/>Ramsey"]
+        RABI["Rabi<br/>π-pulse cal."]
+        RO["Readout<br/>assignment F"]
+        RB["RB<br/>error/Clifford"]
+    end
+
+    BATT --> FIT["Least-squares fit<br/>value ± σ (covariance)"]
+    FIT --> REPORT["Characterization report"]
+```
+
 ## Quickstart
 
 ```bash
