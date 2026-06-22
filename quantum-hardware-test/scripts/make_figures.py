@@ -47,6 +47,7 @@ from src.qubit import (  # noqa: E402
     simulate_rabi, fit_rabi,
     simulate_readout_iq, assignment_fidelity,
     simulate_rb, fit_rb,
+    error_budget,
 )
 
 ASSETS = REPO_ROOT / "assets"
@@ -60,6 +61,7 @@ DETUNING_TRUE = 0.5e6    # 0.5 MHz
 RABI_TRUE = 10e6         # 10 MHz
 READOUT_SNR = 6.0        # blob separation / sigma
 RB_P = 0.995             # depolarizing parameter per Clifford
+T_GATE = 20e-9           # single-Clifford gate duration (20 ns)
 
 BOX = dict(boxstyle="round,pad=0.45", facecolor="#f8fafc", edgecolor="#cbd5e1")
 
@@ -254,6 +256,51 @@ def fig_summary():
     _save(fig, "characterization_summary.png")
 
 
+def fig_error_budget():
+    """Coherence-limited vs RB-measured gate error, with the control excess on top.
+
+    The measured error comes from the same RB run as the rest of the gallery; the
+    coherence floor comes from the injected T1/T2 over a single-Clifford gate.
+    """
+    L, S, sg = simulate_rb(RB_P, n_sequences=40, n_shots=4096, seed=SEED + 6)
+    rb = fit_rb(L, S, sg)
+    b = error_budget(T_GATE, T1_TRUE, T2_TRUE, rb_p=rb.p)
+
+    fig, ax = plt.subplots(figsize=(6.6, 4.4))
+    # Bar 1: the coherence floor (what T1/T2 alone force).
+    # Bar 2: the same floor + the measured excess stacked on top == measured error.
+    x = [0, 1]
+    ax.bar(x[0], b.coherence_error, width=0.62, color=PALETTE[2],
+           label="coherence-limited (T1/T2 floor)", zorder=3)
+    ax.bar(x[1], b.coherence_error, width=0.62, color=PALETTE[2], zorder=3)
+    ax.bar(x[1], b.excess_error, width=0.62, bottom=b.coherence_error,
+           color=PALETTE[1], label="excess (control / leakage)", zorder=3)
+
+    ax.set_xticks(x, ["coherence\nlimit", "RB-measured\nerror"])
+    ax.set_ylabel("average gate error per Clifford")
+    ax.set_title("Gate error budget vs coherence limit")
+    ax.set_ylim(0, b.measured_error * 1.28)
+
+    # Value labels.
+    ax.text(x[0], b.coherence_error, f"  {b.coherence_error:.2e}",
+            ha="center", va="bottom", fontsize=9, family="monospace")
+    ax.text(x[1], b.measured_error, f"  {b.measured_error:.2e}",
+            ha="center", va="bottom", fontsize=9, family="monospace")
+
+    _annotate(
+        ax,
+        f"t_gate = {T_GATE * 1e9:.0f} ns\n"
+        f"T1 = {T1_TRUE * 1e6:.0f} us  T2 = {T2_TRUE * 1e6:.0f} us\n"
+        f"p  = {rb.p:.4f}\n"
+        f"F_RB   = {1 - b.measured_error:.5f}\n"
+        f"e_coh  = {b.coherence_error:.2e}\n"
+        f"excess = {b.excess_error:.2e}",
+        loc="upper left",
+    )
+    ax.legend(loc="upper right")
+    _save(fig, "error_budget.png")
+
+
 def _save(fig, name):
     path = ASSETS / name
     fig.savefig(path)
@@ -268,6 +315,7 @@ def main():
     fig_ramsey()
     fig_rabi()
     fig_readout()
+    fig_error_budget()
     fig_summary()
     print("done.")
 

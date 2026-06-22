@@ -26,6 +26,36 @@ open-system dynamics (collapse operators `√Γ₁·σ⁻` and `√(Γφ/2)·σz
 lazily — everything else runs on numpy/scipy alone, and the test suite is green
 **without** QuTiP installed.
 
+## Gate fidelity & error budget
+
+The primitive measurements feed the two numbers a hardware team reports for a gate
+(`src/qubit/fidelity.py`):
+
+- **Average gate fidelity from RB** — from the RB depolarizing parameter `p`, the
+  error per Clifford is `r = (1 − p)·(d − 1)/d` and `F = 1 − r`. For a single qubit
+  (`d = 2`) this is `r = (1 − p)/2` — e.g. `p = 0.99 → r = 0.005, F = 0.995`.
+- **Coherence limit** — even a perfect pulse loses fidelity while the gate runs;
+  the single-qubit floor is `e_coh ≈ (t_gate/3)·(1/T1 + 1/T2)` (`F_coh = 1 − e_coh`),
+  the leading-order `t_gate ≪ T1, T2` average over input states. Pass the Ramsey or
+  Hahn-echo T2 directly.
+- **Error budget** — `excess = e_measured − e_coh` splits the RB-measured error into
+  the part forced by decoherence and the **excess** (control / leakage / calibration)
+  a better pulse could recover.
+
+```python
+from src.qubit import error_budget
+b = error_budget(t_gate=20e-9, T1=50e-6, T2=30e-6, rb_p=0.995)
+# b.coherence_error ≈ 3.6e-4   b.measured_error = 2.5e-3   b.excess_error ≈ 2.1e-3
+```
+
+![Gate error budget](assets/error_budget.png)
+
+*Coherence-limited (green, the T1/T2 floor) vs RB-measured gate error per Clifford;
+the red segment is the control/leakage **excess** on top of the floor.*
+
+These are analytic relations evaluated on the bench's simulated RB and coherence
+measurements — the same closed forms used to read off a real run.
+
 ## Characterization gallery
 
 Every figure shows the **noisy single-shot data** (markers, with binomial error

@@ -38,6 +38,14 @@ from .randomized_benchmarking import (
     RBResult,
     epc_from_p,
 )
+from .fidelity import (
+    average_gate_fidelity_from_rb,
+    error_per_clifford_from_rb,
+    coherence_limit_error,
+    error_budget,
+    CoherenceLimit,
+    ErrorBudget,
+)
 
 __all__ = [
     "FitResult",
@@ -63,4 +71,10 @@ __all__ = [
     "fit_rb",
     "RBResult",
     "epc_from_p",
+    "average_gate_fidelity_from_rb",
+    "error_per_clifford_from_rb",
+    "coherence_limit_error",
+    "error_budget",
+    "CoherenceLimit",
+    "ErrorBudget",
 ]

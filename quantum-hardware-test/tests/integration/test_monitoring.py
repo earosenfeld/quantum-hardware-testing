@@ -8,8 +8,9 @@ from src.utils.report import generate_csv_report
 
 
 def test_data_logging_and_csv():
-    sensors = [Sensor(i) for i in range(2)]
-    daq = DAQ(sensors)
+    os.makedirs('data', exist_ok=True)
+    sensors = [Sensor(i, fail_rate=0.0) for i in range(2)]
+    daq = DAQ(sensors, packet_loss_rate=0.0)
     log_entries = []
     for _ in range(5):
         data = daq.read_all()
