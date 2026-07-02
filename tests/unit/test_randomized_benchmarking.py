@@ -3,7 +3,7 @@
 import numpy as np
 import pytest
 
-from src.qubit.randomized_benchmarking import (
+from qht.qubit.randomized_benchmarking import (
     simulate_rb,
     fit_rb,
     epc_from_p,

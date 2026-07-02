@@ -31,13 +31,13 @@ dev = ["pytest>=7.0.0", "pytest-cov"]
 [project.scripts]
 # Headline tool: run the single-qubit characterization battery on the
 # built-in simulators and print fitted values with uncertainties.
-qubit-characterize = "src.qubit.__main__:main"
+qubit-characterize = "qht.qubit.__main__:main"
 # Supporting cryostat thermal-control simulation.
-cryostat-control = "src.cryocooler.cryocooler:main"
+cryostat-control = "qht.cryocooler.cryocooler:main"
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["src*"]
+include = ["qht*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

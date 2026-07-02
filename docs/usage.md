@@ -21,7 +21,7 @@ pytest tests/
 The system can generate both CSV and PDF reports:
 
 ```python
-from src.utils.report import generate_csv_report, generate_pdf_report
+from qht.utils.report import generate_csv_report, generate_pdf_report
 
 # Generate CSV report
 generate_csv_report(log_entries, filename='data/processed/test_log.csv')

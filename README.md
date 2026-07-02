@@ -45,7 +45,7 @@ The primitive measurements feed the two numbers a hardware team reports for a ga
   a better pulse could recover.
 
 ```python
-from src.qubit import error_budget
+from qht.qubit import error_budget
 b = error_budget(t_gate=20e-9, T1=50e-6, T2=30e-6, rb_p=0.995)
 # b.coherence_error ≈ 3.6e-4   b.measured_error = 2.5e-3   b.excess_error ≈ 2.1e-3
 ```
@@ -113,13 +113,13 @@ flowchart TB
 pip install numpy scipy pandas matplotlib reportlab pytest
 
 # Full characterization battery against simulated hardware (known params + noise):
-python -m src.qubit --shots 8192
+python -m qht.qubit --shots 8192
 #   T1 relaxation : 49.7 +/- 0.6 us   (injected 50.0 us)
 #   Ramsey T2*    : 29.8 +/- 0.5 us   ...
 ```
 
 ```python
-from src.qubit import simulate_t1, fit_t1
+from qht.qubit import simulate_t1, fit_t1
 
 delays, p_hat, sigma = simulate_t1(t1_true=50e-6, n_shots=4096, seed=0)
 res = fit_t1(delays, p_hat, sigma)

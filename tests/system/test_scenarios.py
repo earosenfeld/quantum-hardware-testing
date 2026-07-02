@@ -2,11 +2,11 @@ import pytest
 import pandas as pd
 from datetime import datetime
 from pathlib import Path
-from src.cryocooler.sensor import Sensor
-from src.cryocooler.pid import PID
-from src.daq.daq_system import DAQ
-from src.utils.report import generate_csv_report, generate_pdf_report
-from src.cryocooler.thermal_model import ThermalModel
+from qht.cryocooler.sensor import Sensor
+from qht.cryocooler.pid import PID
+from qht.daq.daq_system import DAQ
+from qht.utils.report import generate_csv_report, generate_pdf_report
+from qht.cryocooler.thermal_model import ThermalModel
 import numpy as np
 
 class TestScenario:

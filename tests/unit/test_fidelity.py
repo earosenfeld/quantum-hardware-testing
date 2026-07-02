@@ -2,7 +2,7 @@
 
 import pytest
 
-from src.qubit.fidelity import (
+from qht.qubit.fidelity import (
     average_gate_fidelity_from_rb,
     error_per_clifford_from_rb,
     coherence_limit_error,

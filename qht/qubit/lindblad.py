@@ -2,7 +2,7 @@
 
 This module lets T1 and T2 *emerge* from open-system dynamics instead of being
 assumed by a closed-form formula. It is entirely optional: it imports QuTiP
-lazily inside the functions so that importing :mod:`src.qubit` (and running the
+lazily inside the functions so that importing :mod:`qht.qubit` (and running the
 whole test suite) works with only numpy/scipy installed. Call :func:`have_qutip`
 to check availability before using the engine; tests skip these paths when it
 is absent.

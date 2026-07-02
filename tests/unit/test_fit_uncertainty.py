@@ -3,7 +3,7 @@
 import numpy as np
 import pytest
 
-from src.qubit.models import (
+from qht.qubit.models import (
     FitResult,
     exp_decay,
     ramsey_decay,

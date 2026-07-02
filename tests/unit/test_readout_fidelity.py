@@ -3,7 +3,7 @@
 import numpy as np
 import pytest
 
-from src.qubit.readout import simulate_readout_iq, assignment_fidelity
+from qht.qubit.readout import simulate_readout_iq, assignment_fidelity
 
 
 def test_high_snr_fidelity_approaches_one():

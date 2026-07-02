@@ -3,7 +3,7 @@
 import numpy as np
 import pytest
 
-from src.qubit.hahn_echo import simulate_hahn_echo, fit_hahn_echo
+from qht.qubit.hahn_echo import simulate_hahn_echo, fit_hahn_echo
 
 
 def test_echo_extends_coherence_beyond_ramsey():

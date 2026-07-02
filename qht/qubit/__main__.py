@@ -7,7 +7,7 @@ without any hardware attached.
 
     qubit-characterize                 # default injected parameters
     qubit-characterize --shots 8192    # tighter error bars
-    python -m src.qubit --t1-us 75
+    python -m qht.qubit --t1-us 75
 """
 
 from __future__ import annotations

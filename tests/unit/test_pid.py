@@ -1,7 +1,7 @@
 import pytest
 import numpy as np
 from numpy.testing import assert_allclose
-from src.cryocooler.pid import PID
+from qht.cryocooler.pid import PID
 
 def test_pid_step_response():
     # Create PID controller with conservative gains

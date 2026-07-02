@@ -1,5 +1,5 @@
 import os
-from src.utils.report import generate_csv_report, generate_pdf_report
+from qht.utils.report import generate_csv_report, generate_pdf_report
 
 
 def test_generate_csv_report():

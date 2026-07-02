@@ -1,6 +1,6 @@
 import pytest
-from src.cryocooler.sensor import Sensor
-from src.daq.daq_system import DAQ
+from qht.cryocooler.sensor import Sensor
+from qht.daq.daq_system import DAQ
 
 def test_daq_data_acquisition():
     sensors = [Sensor(i) for i in range(2)]

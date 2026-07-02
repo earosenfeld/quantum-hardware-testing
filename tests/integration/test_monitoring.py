@@ -2,9 +2,9 @@ import pytest
 import os
 import pandas as pd
 from datetime import datetime
-from src.cryocooler.sensor import Sensor
-from src.daq.daq_system import DAQ
-from src.utils.report import generate_csv_report
+from qht.cryocooler.sensor import Sensor
+from qht.daq.daq_system import DAQ
+from qht.utils.report import generate_csv_report
 
 
 def test_data_logging_and_csv():

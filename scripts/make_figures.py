@@ -5,7 +5,7 @@ least-squares FITTED CURVE (line) and the extracted parameter +/- its
 covariance-based uncertainty -- i.e. exactly the artefact a hardware reviewer
 reads off a real characterization run.
 
-Run from the package root so ``from src.qubit import ...`` resolves::
+Run from the package root so ``from qht.qubit import ...`` resolves::
 
     cd quantum-hardware-test && .venv/bin/python scripts/make_figures.py
 
@@ -18,7 +18,7 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
-# Make ``from src.qubit import ...`` resolve regardless of CWD.
+# Make ``from qht.qubit import ...`` resolve regardless of CWD.
 REPO_ROOT = Path(__file__).resolve().parents[1]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
@@ -41,7 +41,7 @@ plt.rcParams.update({
 PALETTE = ["#2563eb", "#dc2626", "#059669", "#d97706", "#7c3aed", "#0891b2"]
 # ---------------------------------------------------------------------------- #
 
-from src.qubit import (  # noqa: E402
+from qht.qubit import (  # noqa: E402
     simulate_t1, fit_t1,
     simulate_ramsey, fit_ramsey,
     simulate_rabi, fit_rabi,

@@ -3,8 +3,8 @@
 import numpy as np
 import pytest
 
-from src.qubit.relaxation import simulate_t1, fit_t1
-from src.qubit.models import exp_decay
+from qht.qubit.relaxation import simulate_t1, fit_t1
+from qht.qubit.models import exp_decay
 
 
 def test_t1_recovered_within_error_bar():

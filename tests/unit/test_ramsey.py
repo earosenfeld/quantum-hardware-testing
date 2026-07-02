@@ -3,7 +3,7 @@
 import numpy as np
 import pytest
 
-from src.qubit.ramsey import simulate_ramsey, fit_ramsey
+from qht.qubit.ramsey import simulate_ramsey, fit_ramsey
 
 
 def test_ramsey_recovers_t2_and_detuning():

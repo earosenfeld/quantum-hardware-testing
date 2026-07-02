@@ -7,15 +7,15 @@ green on a numpy/scipy-only environment.
 import numpy as np
 import pytest
 
-from src.qubit.lindblad import have_qutip
+from qht.qubit.lindblad import have_qutip
 
 pytestmark = pytest.mark.skipif(not have_qutip(), reason="qutip not installed")
 
 
 def test_t1_emerges_from_master_equation():
     """Excited population from |1> decays at the injected T1 (no Tphi)."""
-    from src.qubit.lindblad import simulate_t1_lindblad
-    from src.qubit.relaxation import fit_t1
+    from qht.qubit.lindblad import simulate_t1_lindblad
+    from qht.qubit.relaxation import fit_t1
 
     t1 = 60e-6
     tlist, p1 = simulate_t1_lindblad(t1, tphi=np.inf)
@@ -25,8 +25,8 @@ def test_t1_emerges_from_master_equation():
 
 def test_t2_emerges_and_obeys_relation():
     """Coherence from |+> decays at 1/T2 = 1/(2 T1) + 1/Tphi."""
-    from src.qubit.lindblad import simulate_t2_lindblad
-    from src.qubit.hahn_echo import fit_hahn_echo
+    from qht.qubit.lindblad import simulate_t2_lindblad
+    from qht.qubit.hahn_echo import fit_hahn_echo
 
     t1, tphi = 60e-6, 40e-6
     tlist, coh, t2_expected = simulate_t2_lindblad(t1, tphi)
@@ -40,7 +40,7 @@ def test_t2_emerges_and_obeys_relation():
 def test_collapse_operators_have_correct_rates():
     """c1 = sqrt(Gamma1) sigma^-, cphi = sqrt(Gamma_phi/2) sigma_z."""
     import qutip as qt
-    from src.qubit.lindblad import collapse_operators
+    from qht.qubit.lindblad import collapse_operators
 
     t1, tphi = 50e-6, 30e-6
     c_ops = collapse_operators(t1, tphi)

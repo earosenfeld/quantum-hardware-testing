@@ -3,7 +3,7 @@
 import numpy as np
 import pytest
 
-from src.qubit.rabi import simulate_rabi, fit_rabi
+from qht.qubit.rabi import simulate_rabi, fit_rabi
 
 
 def test_rabi_recovers_frequency_and_pi_pulse():
