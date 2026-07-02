@@ -10,9 +10,6 @@ jobs:
   test:
     name: pytest (py${{ matrix.python-version }})
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: quantum-hardware-test
     strategy:
       fail-fast: false
       matrix:

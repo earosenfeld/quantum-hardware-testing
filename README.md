@@ -1,5 +1,7 @@
 # Quantum Hardware Test Bench
 
+[![CI](https://github.com/earosenfeld/quantum-hardware-testing/actions/workflows/ci.yml/badge.svg)](https://github.com/earosenfeld/quantum-hardware-testing/actions/workflows/ci.yml)
+
 A **single-qubit characterization bench** — the standard measurements used to
 characterize and calibrate superconducting / trapped-ion qubits inside a dilution
 refrigerator — together with the **cryostat thermal-control** instrumentation that
@@ -154,4 +156,4 @@ pytest tests/ -q     # every fit validated against injected ground truth
 
 ## License
 
-MIT
+MIT — see [LICENSE](LICENSE).
