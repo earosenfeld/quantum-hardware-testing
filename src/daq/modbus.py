@@ -1,3 +1,12 @@
+"""Simulated instrument-link fault injectors.
+
+These are NOT protocol implementations — no Modbus framing or VISA
+session management lives here. They model the *failure behavior* of an
+instrument link (probabilistic drops, latency, reconnect cycles) so the
+DAQ layer's error handling and recovery paths can be exercised in tests
+without hardware.
+"""
+
 import time
 import random
 
