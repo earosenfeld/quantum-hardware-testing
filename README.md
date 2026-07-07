@@ -12,6 +12,12 @@ sampling of N single-shot reads per point) and fit by **least squares**, reporti
 every parameter with a **covariance-based uncertainty** (`perr = sqrt(diag(pcov))`)
 — the same workflow run on real hardware.
 
+![Animated T1 acquisition: points stream in with shot-noise error bars and the exponential refit converges onto the injected truth](assets/t1_live_fit.gif)
+
+*T1 measurement as the bench runs it (`scripts/make_demo_gif.py`): each new
+delay point triggers a refit; the covariance-based 1σ bar shrinks onto the
+injected 75 µs ground truth.*
+
 ## Characterization experiments
 
 | Experiment | Model fit | Extracts |
