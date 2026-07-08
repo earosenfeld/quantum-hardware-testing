@@ -50,4 +50,4 @@ reports/*
 .coverage
 htmlcov/
 data/test_report.pdf
-data/test_report.pdf
+data/test_log.csv
