@@ -37,7 +37,7 @@ lazily — everything else runs on numpy/scipy alone, and the test suite is gree
 ## Gate fidelity & error budget
 
 The primitive measurements feed the two numbers a hardware team reports for a gate
-(`src/qubit/fidelity.py`):
+(`qht/qubit/fidelity.py`):
 
 - **Average gate fidelity from RB** — from the RB depolarizing parameter `p`, the
   error per Clifford is `r = (1 − p)·(d − 1)/d` and `F = 1 − r`. For a single qubit
@@ -143,7 +143,7 @@ not the headline.
 ## Package layout
 
 ```
-src/
+qht/
 ├── qubit/            # headline: T1 / T2* / Rabi / echo / readout / RB + fits with uncertainty
 │   ├── models.py     #   shared fit models + covariance-based FitResult
 │   ├── relaxation.py # ramsey.py  rabi.py  hahn_echo.py  readout.py

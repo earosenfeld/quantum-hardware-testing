@@ -16,7 +16,7 @@ See the [Usage Guide](usage.md) for detailed instructions on how to use the syst
 
 ## Project Structure
 
-- `src/cryocooler/`: Main source code
+- `qht/cryocooler/`: Main source code
 - `tests/`: Test suite
 - `data/`: Data storage
 - `logs/`: System logs
